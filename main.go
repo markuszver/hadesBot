@@ -15,15 +15,11 @@ func main() {
 	if err != nil {
 		log.Panic(err)
 	}
-	chatID, err := utils.GetChatID()
-	chatCfg := BotAPI.ChatInviteLinkConfig{
-		ChatConfig: BotAPI.ChatConfig{
-			ChatID:             chatID,
-			SuperGroupUsername: "",
-		},
-	}
 	bot.Debug = true
-	link, err := bot.GetInviteLink(chatCfg)
+	link, err := utils.GetInviteLink(bot)
+	if err != nil {
+		log.Panic(err)
+	}
 
 	log.Printf("Authorized on account %s", bot.Self.UserName)
 
@@ -33,8 +29,8 @@ func main() {
 	updates := bot.GetUpdatesChan(u)
 
 	for update := range updates {
-		chatID := update.Message.Chat.ID
 		if update.Message != nil && update.Message.IsCommand() {
+			chatID := update.Message.Chat.ID
 			msg := BotAPI.NewMessage(chatID, "")
 			// If we got a message
 			log.Printf("[%s] %s", update.Message.From.UserName, update.Message.Text)
