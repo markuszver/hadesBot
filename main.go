@@ -2,20 +2,21 @@ package main
 
 import (
 	"log"
-	"os"
 
 	BotAPI "github.com/go-telegram-bot-api/telegram-bot-api/v5"
+	"github.com/markuszver/hadesBot/config"
+	"github.com/markuszver/hadesBot/utils"
 	"github.com/markuszver/hadesBot/vars"
 )
 
 func main() {
 	var bot *BotAPI.BotAPI
 	//hadesChannel:=
-	bot, err := BotAPI.NewBotAPI(os.Getenv("BOT_APITOKEN"))
+	bot, err := BotAPI.NewBotAPI(config.Config("BOT_APITOKEN"))
 	if err != nil {
 		log.Panic(err)
 	}
-	chatID, err := GetChatID()
+	chatID, err := utils.GetChatID()
 	chatCfg := BotAPI.ChatInviteLinkConfig{
 		ChatConfig: BotAPI.ChatConfig{
 			ChatID:             chatID,
@@ -38,10 +39,10 @@ func main() {
 			log.Printf("[%s] %s", update.Message.From.UserName, update.Message.Text)
 			text := update.Message.Text
 			msg := BotAPI.NewMessage(chatID, "Введите пароль")
-			if text == os.Getenv("TGPASSWORD") {
+			if text == config.Config("TGPASSWORD") {
 				//sendInvite
 			} else {
-				msg := BotAPI.NewMessage(chatID, vars.IncorrectPassword)
+				msg = BotAPI.NewMessage(chatID, vars.IncorrectPassword)
 				msg.ReplyToMessageID = update.Message.MessageID
 				bot.Send(msg)
 			}

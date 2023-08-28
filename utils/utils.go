@@ -1,12 +1,12 @@
-package main
+package utils
 
 import (
 	"fmt"
 	"io"
 	"net/http"
-	"os"
 
 	BotAPI "github.com/go-telegram-bot-api/telegram-bot-api/v5"
+	"github.com/markuszver/hadesBot/config"
 	"github.com/tidwall/gjson"
 )
 
@@ -15,7 +15,7 @@ type Bot struct {
 }
 
 func GetChatID() (int64, error) {
-	url := fmt.Sprintf("https://api.telegram.org/bot%s/getUpdates", os.Getenv("BOT_APITOKEN"))
+	url := fmt.Sprintf("https://api.telegram.org/bot%s/getUpdates", config.Config("BOT_APITOKEN"))
 	req, err := http.NewRequest(http.MethodPost, url, nil)
 	if err != nil {
 		return 0, err
