@@ -39,8 +39,11 @@ func main() {
 			log.Printf("[%s] %s", update.Message.From.UserName, update.Message.Text)
 			text := update.Message.Text
 			msg := BotAPI.NewMessage(chatID, "Введите пароль")
+			msg.ReplyToMessageID = update.Message.MessageID
+			bot.Send(msg)
 			if text == config.Config("TGPASSWORD") {
 				//sendInvite
+
 			} else {
 				msg = BotAPI.NewMessage(chatID, vars.IncorrectPassword)
 				msg.ReplyToMessageID = update.Message.MessageID
