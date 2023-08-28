@@ -6,7 +6,6 @@ import (
 	BotAPI "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"github.com/markuszver/hadesBot/config"
 	"github.com/markuszver/hadesBot/utils"
-	"github.com/markuszver/hadesBot/vars"
 )
 
 func main() {
@@ -35,19 +34,18 @@ func main() {
 
 	for update := range updates {
 		chatID := update.Message.Chat.ID
-		if update.Message != nil { // If we got a message
+		if update.Message != nil && update.Message.IsCommand() {
+			msg := BotAPI.NewMessage(chatID, "")
+			// If we got a message
 			log.Printf("[%s] %s", update.Message.From.UserName, update.Message.Text)
-			text := update.Message.Text
-			msg := BotAPI.NewMessage(chatID, "Введите пароль")
-			msg.ReplyToMessageID = update.Message.MessageID
-			bot.Send(msg)
-			if text == config.Config("TGPASSWORD") {
-				//sendInvite
-
-			} else {
-				msg = BotAPI.NewMessage(chatID, vars.IncorrectPassword)
-				msg.ReplyToMessageID = update.Message.MessageID
-				bot.Send(msg)
+			switch update.Message.Command() {
+			case "getlink":
+				msg.Text = link
+			default:
+				msg.Text = "wrong command"
+			}
+			if _, err := bot.Send(msg); err != nil {
+				log.Panic(err)
 			}
 		}
 	}
