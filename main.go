@@ -35,6 +35,12 @@ func main() {
 			// If we got a message
 			log.Printf("[%s] %s", update.Message.From.UserName, update.Message.Text)
 			switch update.Message.Command() {
+			case "start":
+				msg.Text = "ну привет, лобачевский сука"
+			// case "sendPhoto":
+			// 	func handlePhoto(){
+
+			// 	}
 			case "getlink":
 				msg.Text = link
 			default:
