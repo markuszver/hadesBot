@@ -11,7 +11,7 @@ type Bot struct {
 	*BotAPI.BotAPI
 }
 
-func getChatID() (int64, error) {
+func GetChatID() (int64, error) {
 	// url := fmt.Sprintf("https://api.telegram.org/bot%s/getUpdates", config.Config("BOT_APITOKEN"))
 	// req, err := http.NewRequest(http.MethodPost, url, nil)
 	// if err != nil {
@@ -39,7 +39,7 @@ func getChatID() (int64, error) {
 }
 
 func GetInviteLink(bot *BotAPI.BotAPI) (string, error) {
-	chatID, err := getChatID()
+	chatID, err := GetChatID()
 	if err != nil {
 		return "", err
 	}
